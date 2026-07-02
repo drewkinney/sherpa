@@ -2,7 +2,7 @@
 
 <img src="./docs/img/sherpa-banner.jpg" alt="Sherpa — a Claude Skill for structured prompt rebuilding" width="100%" />
 
-# 🏔️ Sherpa
+# Sherpa
 
 **A Claude Skill that turns a loosely-worded prompt into a tightened, gap-filled, structured one**
 
