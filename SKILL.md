@@ -57,7 +57,13 @@ To add a new format: create a new file in formats/ with the three-field template
 
 ## "All" handling
 
-If the format keyword is `all`, do not run every format silently. First, estimate token cost: state roughly what one format costs vs. all of them (a simple multiplier off the single-format estimate, scaled to however many formats currently exist in formats/ — this is a heads-up, not an invoice). Ask directly: run all of them, or pick one? Wait for their answer before generating anything, unless they've already said "all" after seeing this warning once before in the session, or explicitly override with something like "yes all, skip the warning."
+If the format keyword is `all`, do not run every format silently. First, estimate token cost per format, not as one flat multiplier — a flat "8x" is useless because formats aren't equal weight: fewshot needs 2-3 full example pairs, anthropic-system needs persona/context framing, while narrative, json, yaml, xml, and markdown stay close to the size of the rebuilt slots alone. A single number hides that spread and gives the user nothing to decide with.
+
+Instead, for the specific raw prompt just given:
+1. Estimate a rough token count for each format currently in formats/, based on that prompt's actual content and what that format's spec requires to render it (this varies per call — don't reuse a cached table).
+2. List them compact, one line per format, numbers only — flag the outliers with a short reason (e.g., "fewshot ~450 (needs 2-3 examples)").
+3. Sum to a total and state it against what one format alone would cost, so the delta is concrete instead of an abstract multiplier.
+4. Ask directly: run all of them, or pick one? Wait for their answer before generating anything, unless they've already said "all" after seeing this estimate once before in the session, or explicitly override with something like "yes all, skip the warning."
 
 ## Output
 

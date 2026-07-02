@@ -77,7 +77,7 @@ The pattern across all of it: structure isn't decoration. It's how the model fig
 - **Hedging and filler cut** — vague qualifiers stripped, weak verbs sharpened into direct instructions.
 - **Your specifics survive** — numbers, names, tools, constraints never get softened or genericized in the name of "cleaning up."
 - **The right shape for the destination** — eight formats on tap, each mapped to where it actually pastes best, chosen by keyword, not by guesswork.
-- **A cost warning before the expensive option** — asking for `all` gets you a token-cost estimate first, not a silent multi-format dump.
+- **A real cost breakdown before the expensive option** — asking for `all` gets a per-format token estimate, not a flat "8x" — heavier formats (fewshot, anthropic-system) are called out by name, not hidden inside an average.
 
 <div align="right"><kbd><a href="#table-of-contents">↑ back to top ↑</a></kbd></div>
 
@@ -140,7 +140,7 @@ Sherpa is one `SKILL.md` plus a `formats/` directory of small spec files. There 
 | **XML** | `xml` | Claude system prompts, CLAUDE.md, tool/function definitions |
 | **YAML** | `yaml` | Config files, CI/CD prompt pipelines, Claude Code frontmatter, n8n/Zapier steps |
 
-Ask for `all` and Sherpa quotes a token-cost estimate before generating every format — confirm once per session and it stops asking.
+Ask for `all` and Sherpa quotes a per-format token estimate before generating anything — not one flat multiplier, since fewshot (2-3 examples) and anthropic-system (persona framing) run heavier than narrative, json, yaml, xml, or markdown. Confirm once per session and it stops asking.
 
 <div align="right"><kbd><a href="#table-of-contents">↑ back to top ↑</a></kbd></div>
 
@@ -195,7 +195,20 @@ sherpa xml: draft me something that gets a support bot to stop apologizing so mu
 sherpa all: draft me something that gets a support bot to stop apologizing so much
 ```
 
-Sherpa quotes the token cost across all 8 formats first, then waits for confirmation.
+```
+narrative        ~180
+markdown         ~220
+xml              ~210
+yaml             ~200
+json             ~230
+openai-system    ~260
+anthropic-system ~340  (persona/context framing)
+fewshot          ~450  (needs 2-3 examples)
+─────────────────────
+total            ~2,090   vs. ~180 for one format
+
+Run all 8, or pick one?
+```
 
 <div align="right"><kbd><a href="#table-of-contents">↑ back to top ↑</a></kbd></div>
 
