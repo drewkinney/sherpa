@@ -20,6 +20,7 @@
 ## Table of Contents
 
 - [Why Sherpa](#why-sherpa)
+- [Every Prompt Starts Unstructured](#every-prompt-starts-unstructured)
 - [What You Get](#what-you-get)
 - [How It Works](#how-it-works)
 - [Format Catalog](#format-catalog)
@@ -27,6 +28,7 @@
 - [Usage](#usage)
 - [Adding a New Format](#adding-a-new-format)
 - [Design Principles](#design-principles)
+- [Works Cited](#works-cited)
 - [License](#license)
 
 ---
@@ -47,6 +49,18 @@ Sherpa is a Claude Skill that takes your raw prompt and rebuilds it as a complet
 > [!NOTE]
 > **Best for:** rebuilding prompts before they go into a system prompt, an API call, a config file, or a teammate's hands.
 > **Not for:** generating prompts from nothing — Sherpa needs your raw intent to sharpen. Garbage in, sharpened garbage out.
+
+<div align="right"><kbd><a href="#table-of-contents">↑ back to top ↑</a></kbd></div>
+
+---
+
+## Every Prompt Starts Unstructured
+
+Nobody types a system prompt into existence fully formed. A prompt starts as whatever's in your head — a run-on sentence, a half-finished thought, a task description missing the constraints you only remembered after hitting send. That's normal. It's also the reason two people asking a model the same underlying question get wildly different answers: the model isn't reading intent, it's reading the words on the page, and unstructured text buries the parts that matter (role, constraints, output shape) inside the parts that don't (tone, throat-clearing, run-on context).
+
+This isn't a matter of opinion. It's measured. Anthropic's own prompt-engineering documentation recommends wrapping distinct prompt components — role, context, task, examples, output format — in explicit tags specifically because it "helps Claude parse your prompt more accurately, leading to higher-quality outputs," and because unlabeled prompts leave the model to guess where one instruction ends and another begins (Anthropic). OpenAI's guidance points the same direction: prompt engineering is described as an iterative discipline where clearer structure and grounding data consistently produce more reliable output than loosely worded requests (OpenAI). Independent, peer-reviewed research backs this up outside vendor documentation too — a 2024 clinical study found that organizing information into a standardized template *before* asking a large language model to reason over it measurably improved diagnostic accuracy compared to feeding the model the same information unstructured ("Structured Clinical Reasoning"), and a 2025 evaluation of GPT-4o found that prompt style alone — independent of the underlying task — changed output accuracy, efficiency, and token cost ("Enhancing Structured Data Generation"). Amazon's applied guidance for Claude 3 on Bedrock reaches the same conclusion from the deployment side: production prompt quality is a function of explicit structure, not prompt length or cleverness (Amazon Web Services).
+
+The pattern across all of it: structure isn't decoration. It's how the model figures out what's actually being asked. Sherpa exists because that structuring step is tedious to do by hand every time, and because the "right" structure isn't one-size-fits-all — a prompt bound for a Claude system parameter wants XML; the same prompt bound for a CI pipeline wants YAML. Sherpa does the editing pass once and outputs into whichever shape the destination actually rewards.
 
 <div align="right"><kbd><a href="#table-of-contents">↑ back to top ↑</a></kbd></div>
 
@@ -209,6 +223,22 @@ Nothing else changes. `SKILL.md` reads the directory fresh every time it runs, s
 - **Specifics are sacred.** Numbers, names, tools, and constraints the user gave never get softened for the sake of polish.
 - **Terse questions.** "Short or long?" — not a paragraph explaining why the question is being asked.
 - **Disposable by design.** Output is always inline, never written to a file. Rebuild it, paste it, done.
+
+<div align="right"><kbd><a href="#table-of-contents">↑ back to top ↑</a></kbd></div>
+
+---
+
+## Works Cited
+
+Amazon Web Services. "Prompt Engineering Techniques and Best Practices: Learn by Doing with Anthropic's Claude 3 on Amazon Bedrock." *AWS Machine Learning Blog*, Amazon Web Services, aws.amazon.com/blogs/machine-learning/prompt-engineering-techniques-and-best-practices-learn-by-doing-with-anthropics-claude-3-on-amazon-bedrock/. Accessed 2 July 2026.
+
+Anthropic. "Use XML Tags to Structure Your Prompts." *Claude Docs*, Anthropic, platform.claude.com/docs/en/build-with-claude/prompt-engineering/use-xml-tags. Accessed 2 July 2026.
+
+"Enhancing Structured Data Generation with GPT-4o: Evaluating Prompt Efficiency Across Prompt Styles." *PMC*, National Center for Biotechnology Information, 2025, pmc.ncbi.nlm.nih.gov/articles/PMC11979239/. Accessed 2 July 2026.
+
+OpenAI. "Prompt Engineering." *OpenAI API Documentation*, OpenAI, developers.openai.com/api/docs/guides/prompt-engineering. Accessed 2 July 2026.
+
+"Structured Clinical Reasoning Prompt Enhances LLM's Diagnostic Capabilities in Diagnosis Please Quiz Cases." *medRxiv*, 2024, www.medrxiv.org/content/10.1101/2024.09.01.24312894.full.pdf. Accessed 2 July 2026.
 
 <div align="right"><kbd><a href="#table-of-contents">↑ back to top ↑</a></kbd></div>
 
