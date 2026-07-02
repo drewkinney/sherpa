@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="./docs/img/sherpa-banner.jpg" alt="Sherpa — a Claude Skill for structured prompt rebuilding" width="100%" />
+
 # 🏔️ Sherpa
 
 **A Claude Skill that turns a loosely-worded prompt into a tightened, gap-filled, structured one**
@@ -249,3 +251,9 @@ OpenAI. "Prompt Engineering." *OpenAI API Documentation*, OpenAI, developers.ope
 MIT — see [LICENSE](./LICENSE).
 
 <div align="right"><kbd><a href="#table-of-contents">↑ back to top ↑</a></kbd></div>
+
+---
+
+<div align="center">
+<img src="./docs/img/sherpa-logo.jpg" alt="Sherpa logo" width="160" />
+</div>
