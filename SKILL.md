@@ -37,6 +37,30 @@ After the rebuild above produces formatted output, apply a second pass by defaul
 
 This pass runs once per format. If `all` was requested, each format's rebuild gets its own discipline pass before moving to the next format.
 
+## Variant pass
+
+After the discipline pass above, apply a third pass, tuned to a specific target model. Unlike the discipline pass, this one has no skip keyword — it always runs, because the only real question is which model to tune for, not whether to tune at all.
+
+**Resolve the target model, in order:**
+1. If a model keyword was found during invocation parsing, that's the target.
+2. Otherwise, the target is whatever model is currently running this skill (self-detect your own model identity — do not default to a hardcoded model name).
+
+**Apply the variant:**
+- If `variants/<provider>/<model>.md` exists for the resolved target, load it and apply its transforms to the discipline pass's output exactly as that file's "How to apply" section describes.
+- If no matching file exists, run Variant discovery (below) before proceeding.
+
+This pass runs once per format, after that format's discipline pass, same as the discipline pass runs once per format under `all`.
+
+## Variant discovery
+
+Triggered when the resolved target model has no matching file in `variants/<provider>/<model>.md`.
+
+1. Use the WebSearch or WebFetch tool to find that provider's current model name and any published prompting guidance for it.
+2. From what's found, pick from the 8 transform tags (defined in variants/anthropic/*.md as a working example of the pattern) based on the provider's documented guidance. If no specific guidance exists, reason from general model-capability-tier patterns (smaller/faster models lean toward `explicit-directives`/`simplify-language`/`hardened-constraints`; flagship models lean toward `add-section`/`leverage-context`) and state plainly in the new file that this is an inferred judgment call, not sourced guidance.
+3. Write the result to `variants/<provider>/<model>.md`, following the same keywords/provider/transforms/"why"/"how to apply" structure as the Anthropic files.
+4. Apply the newly-written file's transforms to the current call's output.
+5. If the web lookup fails or returns nothing usable, do not write a file. Apply no variant transforms for this call, and say so plainly in the output (see Output section below).
+
 ## Asking questions
 
 Never restate the parsed prompt, the detected format, or your interpretation back to the user before responding. They gave you the prompt — they know what's in it. Go straight to questions if something's missing, or straight to the formatted output if nothing is. No "here's what I'm parsing," no "target: X, deciding this myself," no summary of context you're pulling in.
@@ -73,4 +97,4 @@ Instead, for the specific raw prompt just given:
 
 ## Output
 
-Always return inline in chat. Never write to a file for this skill — the whole point is a fast, pasteable, disposable result. Every format goes in its own separate code block, labeled with the format name as a plain line above the block, not a heavy header. Directly under the label, one short line stating where that format pastes best — pull this from the best_for field in that format's subfile, don't reinvent it. Directly under that pastes-best line, add one more short line: the Fable Five delta for that format's rebuild — what got compressed, what got surfaced, what hierarchy changed (per `discipline/fable-five.md` step 3). Omit this line entirely when `format-only` was used, since no discipline pass ran. This applies whether one format or all of them are returned. Keep commentary between blocks minimal.
+Always return inline in chat. Never write to a file for this skill — the whole point is a fast, pasteable, disposable result. Every format goes in its own separate code block, labeled with the format name as a plain line above the block, not a heavy header. Directly under the label, one short line stating where that format pastes best — pull this from the best_for field in that format's subfile, don't reinvent it. Directly under that pastes-best line, add one more short line: the Fable Five delta for that format's rebuild — what got compressed, what got surfaced, what hierarchy changed (per `discipline/fable-five.md` step 3). Omit this line entirely when `format-only` was used, since no discipline pass ran. If Variant discovery ran for this call (no existing profile for the target model), add one more short line stating the outcome plainly: either "no variant profile existed for {MODEL}; researched and created one" or "no variant profile found for {MODEL}; proceeded without variant tuning" — whichever actually happened. Omit this line when an existing variant file was used, since nothing exceptional occurred. This applies whether one format or all of them are returned. Keep commentary between blocks minimal.
