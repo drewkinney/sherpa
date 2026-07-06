@@ -31,6 +31,12 @@ This is not a reformatting pass — it's an editing pass that happens to output 
 - Tighten language: cut hedging, vague qualifiers, and filler. Sharpen weak verbs into direct instructions.
 - Preserve the user's actual intent and any concrete specifics they gave (numbers, names, tools, constraints) — never soften or genericize specifics in the name of "cleaning up."
 
+## Discipline pass (Fable Five)
+
+After the rebuild above produces formatted output, apply a second pass by default: load `discipline/fable-five.md` and apply its 5 directives to the formatted output. Skip this entire pass only if the `format-only` keyword was present in the invocation — in that case the rebuild output from the section above is returned as-is, unchanged from Sherpa 1.0 behavior.
+
+This pass runs once per format. If `all` was requested, each format's rebuild gets its own discipline pass before moving to the next format.
+
 ## Asking questions
 
 Never restate the parsed prompt, the detected format, or your interpretation back to the user before responding. They gave you the prompt — they know what's in it. Go straight to questions if something's missing, or straight to the formatted output if nothing is. No "here's what I'm parsing," no "target: X, deciding this myself," no summary of context you're pulling in.
@@ -67,4 +73,4 @@ Instead, for the specific raw prompt just given:
 
 ## Output
 
-Always return inline in chat. Never write to a file for this skill — the whole point is a fast, pasteable, disposable result. Every format goes in its own separate code block, labeled with the format name as a plain line above the block, not a heavy header. Directly under the label, one short line stating where that format pastes best — pull this from the best_for field in that format's subfile, don't reinvent it. This applies whether one format or all of them are returned. Keep commentary between blocks minimal.
+Always return inline in chat. Never write to a file for this skill — the whole point is a fast, pasteable, disposable result. Every format goes in its own separate code block, labeled with the format name as a plain line above the block, not a heavy header. Directly under the label, one short line stating where that format pastes best — pull this from the best_for field in that format's subfile, don't reinvent it. Directly under that pastes-best line, add one more short line: the Fable Five delta for that format's rebuild — what got compressed, what got surfaced, what hierarchy changed (per `discipline/fable-five.md` step 3). Omit this line entirely when `format-only` was used, since no discipline pass ran. This applies whether one format or all of them are returned. Keep commentary between blocks minimal.
