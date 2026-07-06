@@ -55,8 +55,21 @@ This pass runs once per format, after that format's discipline pass, same as the
 
 Triggered when the resolved target model has no matching file in `variants/<provider>/<model>.md`.
 
+The 8 transform tags:
+
+| Tag | What it does |
+|---|---|
+| `add-section` | Add a RATIONALE/CONTEXT block before the ask — for models that reason well from background rather than needing everything spelled out |
+| `tighten-steps` | Compress multi-step METHOD instructions into fewer, denser steps |
+| `shorten-sentences` | Enforce sentence/word-length limits |
+| `add-examples` | Include concrete input→output example pairs |
+| `hardened-constraints` | Explicit "Do X. Do not Y. Only accept Z." phrasing, no soft hedges |
+| `leverage-context` | Deliberately use more background/detail — for models that use long context well rather than getting diluted by it |
+| `simplify-language` | Plain vocabulary, no nested clauses |
+| `explicit-directives` | Numbered imperative steps, no suggestion-toned language |
+
 1. Use the WebSearch or WebFetch tool to find that provider's current model name and any published prompting guidance for it.
-2. From what's found, pick from the 8 transform tags (defined in variants/anthropic/*.md as a working example of the pattern) based on the provider's documented guidance. If no specific guidance exists, reason from general model-capability-tier patterns (smaller/faster models lean toward `explicit-directives`/`simplify-language`/`hardened-constraints`; flagship models lean toward `add-section`/`leverage-context`) and state plainly in the new file that this is an inferred judgment call, not sourced guidance.
+2. From what's found, pick from the 8 transform tags defined above based on the provider's documented guidance. If no specific guidance exists, reason from general model-capability-tier patterns (smaller/faster models lean toward `explicit-directives`/`simplify-language`/`hardened-constraints`; flagship models lean toward `add-section`/`leverage-context`) and state plainly in the new file that this is an inferred judgment call, not sourced guidance.
 3. Write the result to `variants/<provider>/<model>.md`, following the same keywords/provider/transforms/"why"/"how to apply" structure as the Anthropic files.
 4. Apply the newly-written file's transforms to the current call's output.
 5. If the web lookup fails or returns nothing usable, do not write a file. Apply no variant transforms for this call, and say so plainly in the output (see Output section below).

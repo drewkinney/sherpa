@@ -11,7 +11,7 @@ Rewrite engine steps, in order:
    - **Flatten instruction hierarchy** — one command per sentence minimum. No embedded clauses hiding directives.
    - **Name constraints explicitly** — "Do X. Do not Y. Only accept Z." Never "try to be mindful of Z."
    - **Kill context drift** — every sentence either commands, constrains, or defines. No rhetorical scaffolding.
-   - **Variable clarity** — anything referenced gets named in caps or code: `{FORMAT}`, `{REJECTION_CASE}`.
+   - **Variable clarity** — where a referenced value is a reusable variable and the target format permits tagging (see the target format's own spec — e.g. `formats/narrative.md` explicitly forbids tags/headers), name it in caps or code: `{FORMAT}`, `{REJECTION_CASE}`. Where the target format doesn't permit tagging, state the same specificity in plain prose instead.
    - **Outcome specification first** — state what success looks like before method.
 3. Surface the delta: what got compressed, what got surfaced (a hidden directive made explicit), what hierarchy changed (a buried clause promoted to its own sentence).
 
